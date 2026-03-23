@@ -9,9 +9,9 @@
             margin: 0;
             padding: 0;
             font-family: 'Malgun Gothic', sans-serif;
-            overflow: hidden;
             width: 100vw;
             height: 100vh;
+            overflow: hidden;
             background-image: url('main_bg.png');
             background-color: #f0f8ff;
             background-size: cover;
@@ -21,32 +21,13 @@
             align-items: center;
         }
 
-        #entryScreen {
+        #entryScreen, #resultScreen {
             background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
+            padding: 32px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            width: 300px;
-            z-index: 10;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #34495e;
-        }
-
-        .input-group input {
-            width: 90%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            width: 320px;
+            text-align: center;
         }
 
         #gameScreen {
@@ -56,60 +37,124 @@
             position: relative;
         }
 
-        canvas {
-            background: rgba(255, 255, 255, 0.15);
-            display: block;
-            margin: 0 auto;
-        }
-
         #ui {
             position: absolute;
-            top: 10px;
-            width: 100%;
-            text-align: center;
-            pointer-events: none;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+            box-sizing: border-box;
         }
 
         .score-board {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: bold;
             background: rgba(255,255,255,0.9);
             padding: 8px 16px;
             border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 10px;
+            margin-top: 4px;
+            margin-bottom: 16px;
+            text-align: center;
         }
 
-        .guide-box {
-            font-size: 17px;
-            background: white;
-            padding: 12px 18px;
-            border-radius: 12px;
-            width: 88%;
-            max-width: 520px;
-            margin: 0 auto;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
-            font-weight: bold;
+        .question-card {
+            width: min(88%, 520px);
+            min-height: 120px;
+            background: rgba(255,255,255,0.96);
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px 20px;
+            box-sizing: border-box;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
             line-height: 1.5;
+            margin-top: 12px;
+        }
+
+        .character-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        #characterImg {
+            width: min(42vw, 220px);
+            max-width: 220px;
+            min-width: 120px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
         }
 
         #feedback {
-            margin-top: 10px;
-            font-size: 22px;
+            min-height: 34px;
+            margin-top: 8px;
+            font-size: 24px;
             font-weight: bold;
-            min-height: 32px;
-        }
-
-        #resultScreen {
-            display: none;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 20px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
-        button {
+        .controls {
+            width: min(90%, 520px);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .btn-answer {
+            flex: 1;
+            height: 88px;
+            border: none;
+            border-radius: 20px;
+            font-size: 34px;
+            font-weight: 800;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+        }
+
+        .btn-answer:active {
+            transform: scale(0.98);
+        }
+
+        .btn-o {
+            background: #2ecc71;
+        }
+
+        .btn-x {
+            background: #e74c3c;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .main-btn {
             background-color: #3498db;
             color: white;
             border: none;
@@ -121,129 +166,89 @@
             width: 100%;
         }
 
-        .controls {
-            position: fixed;
-            bottom: 25px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-        }
+        @media (max-width: 480px) {
+            .question-card {
+                font-size: 20px;
+                min-height: 110px;
+                padding: 20px 16px;
+            }
 
-        .btn-move {
-            width: 110px;
-            height: 80px;
-            border-radius: 18px;
-            font-size: 28px;
-            font-weight: bold;
-        }
+            .btn-answer {
+                height: 80px;
+                font-size: 30px;
+            }
 
-        .left-zone {
-            background: #5dade2;
-        }
-
-        .right-zone {
-            background: #58d68d;
+            #feedback {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div id="entryScreen">
-        <h2 style="color:#2c3e50;">🏥 감염관리 챌린지</h2>
+        <h2 style="color:#2c3e50; margin-top: 0;">🏥 감염관리 챌린지</h2>
+
         <div class="input-group">
             <label>소속</label>
             <input type="text" id="affiliationInput" placeholder="소속 입력">
         </div>
+
         <div class="input-group">
             <label>이름</label>
             <input type="text" id="nameInput" placeholder="이름 입력">
         </div>
-        <button onclick="startGame()">Start Game</button>
+
+        <button class="main-btn" onclick="startGame()">Start Game</button>
     </div>
 
     <div id="gameScreen">
         <div id="ui">
             <div class="score-board">
-                <span id="playerInfo"></span> | 점수: <span id="scoreVal">0</span> | 진행: <span id="progressVal">0</span>/<span id="totalVal">12</span>
+                <span id="playerInfo"></span> |
+                점수: <span id="scoreVal">0</span> |
+                진행: <span id="progressVal">1</span>/<span id="totalVal">0</span>
             </div>
-            <div class="guide-box">
-                좋은 감염관리 행동은 받으세요 / 위험한 행동은 피하세요
+
+            <div id="questionCard" class="question-card">
+                문제를 불러오는 중...
             </div>
+
             <div id="feedback"></div>
-        </div>
 
-        <canvas id="gameCanvas"></canvas>
+            <div class="character-wrap">
+                <img id="characterImg" src="Me.png" alt="캐릭터">
+            </div>
 
-        <div class="controls">
-            <button class="btn-move left-zone" onclick="moveLeft()">◀</button>
-            <button class="btn-move right-zone" onclick="moveRight()">▶</button>
+            <div class="controls">
+                <button class="btn-answer btn-o" onclick="chooseAnswer('O')">O</button>
+                <button class="btn-answer btn-x" onclick="chooseAnswer('X')">X</button>
+            </div>
         </div>
     </div>
 
-    <div id="resultScreen">
-        <h2 style="color:#2c3e50;">수고하셨습니다!</h2>
+    <div id="resultScreen" style="display:none;">
+        <h2 style="color:#2c3e50; margin-top: 0;">수고하셨습니다!</h2>
         <p id="finalScore" style="font-size: 24px; font-weight: bold;"></p>
-        <p id="finalComment" style="font-size: 18px;"></p>
-        <button onclick="location.reload()">다시 하기</button>
+        <p id="finalComment" style="font-size: 18px; line-height: 1.5;"></p>
+        <button class="main-btn" onclick="location.reload()">다시 하기</button>
     </div>
 
 <script>
-    const actionData = [
-        { text: "손위생 시행", good: true },
-        { text: "멸균 장갑 착용", good: true },
-        { text: "마스크로 코와 입 완전 가림", good: true },
-        { text: "필요 전 기구 소독 확인", good: true },
-        { text: "오염된 장갑으로 다른 기구 만짐", good: false },
-        { text: "마스크를 코 아래로 착용", good: false },
-        { text: "손위생 없이 환자 접촉", good: false },
-        { text: "유치도뇨관 삽입 전 충분한 소독 생략", good: false },
-        { text: "오염 구역 물품을 청결 구역에 둠", good: false },
-        { text: "무균술 지키며 처치 준비", good: true },
-        { text: "주사 전 손위생 시행", good: true },
-        { text: "찔림 사고를 보고하지 않음", good: false }
+    const quizData = [
+        { q: "Skin prep 전 멸균 장갑을 착용해야 한다.", a: "O", explanation: "오염 예방을 위해 적절한 보호구 착용이 중요합니다." },
+        { q: "유치도뇨관 삽입 전 요도구만 간단히 닦으면 충분하다.", a: "X", explanation: "삽입 전에는 무균술과 충분한 소독 절차가 필요합니다." },
+        { q: "마스크는 코와 입을 완전히 가려야 한다.", a: "O", explanation: "코를 노출하면 비말 차단 효과가 떨어집니다." },
+        { q: "오염된 장갑으로 다른 기구를 만져도 괜찮다.", a: "X", explanation: "오염 확산 위험이 있으므로 장갑 교체가 필요합니다." },
+        { q: "손위생은 환자 접촉 전후 모두 중요하다.", a: "O", explanation: "의료 관련 감염 예방의 기본입니다." },
+        { q: "주사 준비 중 한 번 소독한 트레이는 계속 청결 구역으로 볼 수 있다.", a: "X", explanation: "오염 가능성이 생기면 다시 청결 상태를 확인해야 합니다." },
+        { q: "찔림 사고가 발생하면 즉시 보고해야 한다.", a: "O", explanation: "노출 후 조치와 추적 관리가 필요합니다." },
+        { q: "수술실에서 머리카락이 일부 노출되어도 큰 문제는 아니다.", a: "X", explanation: "노출을 최소화하도록 캡을 올바르게 착용해야 합니다." }
     ];
 
     let score = 0;
-    let isGameRunning = false;
-    let fallingItems = [];
-    let spawnTimer = 0;
-    let itemsShown = 0;
-    const totalItems = 12;
-    const maxFallingItems = 1;
-
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth > 500 ? 420 : window.innerWidth;
-        canvas.height = window.innerHeight;
-        player.y = canvas.height - 170;
-    }
-
-    const playerImg = new Image();
-    playerImg.src = 'Me.png';
-
-    let player = {
-        x: 0,
-        y: 0,
-        w: 70,
-        h: 70,
-        speed: 60
-    };
-
-    function resetPlayerPosition() {
-        player.x = canvas.width / 2 - player.w / 2;
-        player.y = canvas.height - 170;
-    }
-
-    resizeCanvas();
-    resetPlayerPosition();
-
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        if (!isGameRunning) resetPlayerPosition();
-    });
+    let currentQIndex = 0;
+    let isAnswerLocked = false;
 
     function startGame() {
         const affiliation = document.getElementById('affiliationInput').value.trim();
@@ -256,214 +261,80 @@
 
         document.getElementById('playerInfo').innerText = `${affiliation} ${name}`.trim();
         document.getElementById('entryScreen').style.display = 'none';
+        document.getElementById('resultScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'block';
 
         score = 0;
-        fallingItems = [];
-        spawnTimer = 0;
-        itemsShown = 0;
-        isGameRunning = true;
+        currentQIndex = 0;
+        isAnswerLocked = false;
 
         document.getElementById('scoreVal').innerText = score;
-        document.getElementById('progressVal').innerText = itemsShown;
-        document.getElementById('totalVal').innerText = totalItems;
+        document.getElementById('totalVal').innerText = quizData.length;
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const current = quizData[currentQIndex];
+        document.getElementById('questionCard').innerText = current.q;
+        document.getElementById('progressVal').innerText = currentQIndex + 1;
         document.getElementById('feedback').innerText = "";
-
-        resetPlayerPosition();
-        update();
+        document.getElementById('feedback').style.color = "#2c3e50";
+        isAnswerLocked = false;
     }
 
-    function moveLeft() {
-        if (!isGameRunning) return;
-        player.x -= player.speed;
-        if (player.x < 0) player.x = 0;
-    }
+    function chooseAnswer(choice) {
+        if (isAnswerLocked) return;
+        isAnswerLocked = true;
 
-    function moveRight() {
-        if (!isGameRunning) return;
-        player.x += player.speed;
-        if (player.x + player.w > canvas.width) {
-            player.x = canvas.width - player.w;
+        const current = quizData[currentQIndex];
+        const feedbackEl = document.getElementById('feedback');
+
+        if (choice === current.a) {
+            score += 10;
+            feedbackEl.style.color = "#27ae60";
+            feedbackEl.innerText = `정답! +10 / ${current.explanation}`;
+        } else {
+            feedbackEl.style.color = "#c0392b";
+            feedbackEl.innerText = `오답! 0점 / ${current.explanation}`;
         }
-    }
 
-    document.addEventListener('keydown', (e) => {
-        if (!isGameRunning) return;
-        if (e.key === 'ArrowLeft') moveLeft();
-        if (e.key === 'ArrowRight') moveRight();
-    });
+        document.getElementById('scoreVal').innerText = score;
 
-    function spawnItem() {
-        if (itemsShown >= totalItems) return;
-        if (fallingItems.length >= maxFallingItems) return;
+        setTimeout(() => {
+            currentQIndex++;
 
-        const data = actionData[Math.floor(Math.random() * actionData.length)];
-        const itemWidth = canvas.width * 0.68;
-        const x = (canvas.width - itemWidth) / 2;
-
-        fallingItems.push({
-            x: x,
-            y: -90,
-            w: itemWidth,
-            h: 72,
-            text: data.text,
-            good: data.good,
-            scored: false,
-            speed: 2 + Math.random() * 1.2
-        });
-
-        itemsShown++;
-        document.getElementById('progressVal').innerText = itemsShown;
-    }
-
-    function showFeedback(text, color) {
-        const feedback = document.getElementById('feedback');
-        feedback.innerText = text;
-        feedback.style.color = color;
-
-        clearTimeout(showFeedback.timer);
-        showFeedback.timer = setTimeout(() => {
-            feedback.innerText = "";
-        }, 700);
-    }
-
-    function isColliding(a, b) {
-        return (
-            a.x < b.x + b.w &&
-            a.x + a.w > b.x &&
-            a.y < b.y + b.h &&
-            a.y + a.h > b.y
-        );
+            if (currentQIndex >= quizData.length) {
+                endGame();
+            } else {
+                showQuestion();
+            }
+        }, 1200);
     }
 
     function endGame() {
-        isGameRunning = false;
         document.getElementById('gameScreen').style.display = 'none';
         document.getElementById('resultScreen').style.display = 'block';
         document.getElementById('finalScore').innerText = `최종 점수: ${score}점`;
 
         let comment = "";
-        if (score >= 80) {
-            comment = "훌륭합니다! 감염관리 판단이 매우 정확합니다.";
+        if (score >= 70) {
+            comment = "훌륭합니다! 감염관리 기본 수칙을 잘 이해하고 있습니다.";
         } else if (score >= 40) {
-            comment = "좋습니다. 몇 가지 위험 행동만 더 주의하면 됩니다.";
+            comment = "좋습니다. 몇 가지 핵심 수칙을 더 복습하면 더 좋아집니다.";
         } else {
-            comment = "위험 행동과 올바른 행동을 다시 복습해 보세요.";
+            comment = "기본 감염관리 수칙을 다시 한 번 복습해 보세요.";
         }
+
         document.getElementById('finalComment').innerText = comment;
     }
 
-    function update() {
-        if (!isGameRunning) return;
+    document.getElementById('nameInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') startGame();
+    });
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        spawnTimer++;
-        if (spawnTimer > 80) {
-            spawnItem();
-            spawnTimer = 0;
-        }
-
-        ctx.drawImage(playerImg, player.x, player.y, player.w, player.h);
-
-        ctx.fillStyle = "rgba(255,255,255,0.9)";
-        ctx.fillRect(0, canvas.height - 95, canvas.width, 95);
-
-        ctx.fillStyle = "#2e86c1";
-        ctx.font = "bold 18px Malgun Gothic";
-        ctx.fillText("좋은 행동은 받기", 20, canvas.height - 35);
-
-        ctx.fillStyle = "#27ae60";
-        ctx.font = "bold 18px Malgun Gothic";
-        ctx.fillText("위험한 행동은 피하기", canvas.width - 160, canvas.height - 35);
-
-        for (let i = fallingItems.length - 1; i >= 0; i--) {
-            const item = fallingItems[i];
-            item.y += item.speed;
-
-            ctx.fillStyle = item.good ? "#d4efdf" : "#fadbd8";
-            ctx.strokeStyle = item.good ? "#27ae60" : "#c0392b";
-            ctx.lineWidth = 2;
-            roundRect(ctx, item.x, item.y, item.w, item.h, 14, true, true);
-
-            ctx.fillStyle = item.good ? "#1e8449" : "#922b21";
-            ctx.font = "bold 17px Malgun Gothic";
-            wrapText(ctx, item.text, item.x + 12, item.y + 28, item.w - 24, 24);
-
-            if (isColliding(player, item) && !item.scored) {
-                item.scored = true;
-
-                if (item.good) {
-                    score += 10;
-                    showFeedback("좋은 행동을 잘 받았습니다! +10", "#27ae60");
-                } else {
-                    score -= 10;
-                    showFeedback("위험한 행동에 닿았습니다! -10", "#c0392b");
-                }
-
-                document.getElementById('scoreVal').innerText = score;
-                fallingItems.splice(i, 1);
-                continue;
-            }
-
-            if (item.y > canvas.height) {
-                if (item.good) {
-                    score -= 5;
-                    showFeedback("좋은 행동을 놓쳤습니다! -5", "#d35400");
-                    document.getElementById('scoreVal').innerText = score;
-                }
-                fallingItems.splice(i, 1);
-            }
-        }
-
-        if (itemsShown >= totalItems && fallingItems.length === 0) {
-            endGame();
-            return;
-        }
-
-        requestAnimationFrame(update);
-    }
-
-    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-        if (typeof radius === 'number') {
-            radius = { tl: radius, tr: radius, br: radius, bl: radius };
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(x + radius.tl, y);
-        ctx.lineTo(x + width - radius.tr, y);
-        ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-        ctx.lineTo(x + width, y + height - radius.br);
-        ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
-        ctx.lineTo(x + radius.bl, y + height);
-        ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
-        ctx.lineTo(x, y + radius.tl);
-        ctx.quadraticCurveTo(x, y, x + radius.tl, y);
-        ctx.closePath();
-
-        if (fill) ctx.fill();
-        if (stroke) ctx.stroke();
-    }
-
-    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-        const words = text.split(' ');
-        let line = '';
-
-        for (let n = 0; n < words.length; n++) {
-            const testLine = line + words[n] + ' ';
-            const metrics = ctx.measureText(testLine);
-            const testWidth = metrics.width;
-
-            if (testWidth > maxWidth && n > 0) {
-                ctx.fillText(line, x, y);
-                line = words[n] + ' ';
-                y += lineHeight;
-            } else {
-                line = testLine;
-            }
-        }
-        ctx.fillText(line, x, y);
-    }
+    document.getElementById('affiliationInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') startGame();
+    });
 </script>
 </body>
 </html>
