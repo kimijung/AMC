@@ -249,6 +249,25 @@
     let score = 0;
     let currentQIndex = 0;
     let isAnswerLocked = false;
+    let currentAffiliation = '';
+    let currentName = '';
+
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxe5NjMLeJ0Fa_VIxEidrmFmsg7J1BH5awJhP72_SSiwdGMvmGNvAgRvzBZacjzNpVG/exec';
+
+    function saveResultToSheet(affiliation, name, score) {
+        const formData = new FormData();
+        formData.append('affiliation', affiliation);
+        formData.append('name', name);
+        formData.append('score', score);
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'
+        }).catch(error => {
+            console.error('저장 실패:', error);
+        });
+    }
 
     function startGame() {
         const affiliation = document.getElementById('affiliationInput').value.trim();
@@ -258,6 +277,9 @@
             alert("이름을 입력해 주세요!");
             return;
         }
+
+        currentAffiliation = affiliation;
+        currentName = name;
 
         document.getElementById('playerInfo').innerText = `${affiliation} ${name}`.trim();
         document.getElementById('entryScreen').style.display = 'none';
@@ -326,6 +348,8 @@
         }
 
         document.getElementById('finalComment').innerText = comment;
+
+        saveResultToSheet(currentAffiliation, currentName, score);
     }
 
     document.getElementById('nameInput').addEventListener('keydown', function(e) {
