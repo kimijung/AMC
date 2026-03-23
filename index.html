@@ -3,118 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>수술실 감염관리 챌린지</title>
+    <title>AMC 수술실 감염관리 챌린지</title>
     <style>
-        body { margin: 0; background: #f0f8ff; font-family: sans-serif; overflow: hidden; text-align: center; }
-        canvas { background: #ffffff; display: block; margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        /* --- 공통 스타일 (배경 이미지 설정 포함) --- */
+        body {
+            margin: 0;
+            font-family: 'Malgun Gothic', sans-serif;
+            overflow: hidden;
+            text-align: center;
+            width: 100vw;
+            height: 100vh;
+            
+            /* 🖼️ [배경 이미지 넣는 곳] 🖼️ */
+            /* 1단계: 저장소에 이미지 업로드 (예: bg.jpg) */
+            /* 2단계: 아래 줄의 주석(/*)을 제거하고 파일명을 맞추세요 */
+            /* background-image: url('bg.jpg'); */
+            
+            /* 이미지가 없더라도 기본으로 보일 색상 */
+            background-color: #f0f8ff; 
+            background-size: cover; /* 화면을 꽉 채우게 */
+            background-position: center; /* 가운데 정렬 */
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- 1. 입력 화면 (Entry Screen) 스타일 --- */
+        #entryScreen {
+            background: rgba(255, 255, 255, 0.95); /* 약간 투명한 흰색 배경 */
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 10; /* 가장 위에 띄움 */
+        }
+        #entryScreen h1 { color: #2c3e50; margin-bottom: 10px; font-size: 24px;}
+        #entryScreen p { color: #7f8c8d; margin-bottom: 30px; font-size: 14px;}
+        
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #34495e; }
+        .input-group input {
+            width: 250px; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;
+        }
+        .input-group input:focus { border-color: #3498db; outline: none; }
+
+        #startBtn {
+            background-color: #3498db; color: white; border: none; padding: 15px 40px;
+            font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer;
+            transition: background 0.3s; margin-top: 20px; width: 100%;
+        }
+        #startBtn:hover { background-color: #2980b9; }
+
+        /* --- 2. 게임 화면 (Game Screen) 스타일 --- */
+        #gameScreen {
+            display: none; /* 💡처음엔 숨겨둠 */
+            position: relative;
+            width: 100%; height: 100%;
+        }
+
+        /* 기존 게임 스타일들... */
+        canvas { background: rgba(255,255,255,0.7); display: block; margin: 0 auto; }
         #ui { position: absolute; top: 10px; width: 100%; pointer-events: none; }
-        .score { font-size: 20px; font-weight: bold; color: #2c3e50; }
-        .question { font-size: 18px; background: rgba(255,255,255,0.8); padding: 10px; margin: 5px; border-radius: 10px; pointer-events: auto; }
-        .controls { position: fixed; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 20px; }
-        .btn { width: 80px; height: 80px; border-radius: 50%; border: none; color: white; font-size: 24px; font-weight: bold; cursor: pointer; }
+        .score { font-size: 18px; font-weight: bold; color: #2c3e50; background: rgba(255,255,255,0.8); padding: 5px; border-radius: 5px; display: inline-block;}
+        .question { font-size: 18px; background: rgba(255,255,255,0.9); padding: 15px; margin: 10px auto; border-radius: 10px; width: 80%; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); pointer-events: auto; }
+        .controls { position: fixed; bottom: 20px; width: 100%; display: flex; justify-content: center; gap: 30px; }
+        .btn { width: 90px; height: 90px; border-radius: 50%; border: none; color: white; font-size: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.2); }
         .btn-o { background: #2ecc71; }
         .btn-x { background: #e74c3c; }
     </style>
 </head>
 <body>
 
-    <div id="ui">
-        <div class="score">점수: <span id="scoreVal">0</span></div>
-        <div id="qText" class="question">질문 로딩 중...</div>
+    <div id="entryScreen">
+        <h1>🏥 감염관리 챌린지</h1>
+        <p>수술간호팀 여러분, 환영합니다!</p>
+        
+        <div class="input-group">
+            <label>소속</label>
+            <input type="text" id="affiliationInput" placeholder="예: 소속 유닛 " value="A로젯">
+        </div>
+        <div class="input-group">
+            <label>이름</label>
+            <input type="text" id="nameInput" placeholder="이름을 입력하세요">
+        </div>
+
+        <button id="startBtn" onclick="startGame()">게임 시작!</button>
     </div>
 
-    <canvas id="gameCanvas"></canvas>
+    <div id="gameScreen">
+        <div id="ui">
+            <div class="score"><span id="playerInfo"></span> | 점수: <span id="scoreVal">0</span></div>
+            <div id="qText" class="question">질문 로딩 중...</div>
+        </div>
 
-    <div class="controls">
-        <button class="btn btn-o" onclick="movePlayer('O')">O</button>
-        <button class="btn btn-x" onclick="movePlayer('X')">X</button>
+        <canvas id="gameCanvas"></canvas>
+
+        <div class="controls">
+            <button class="btn btn-o" onclick="chooseAnswer('O')">O</button>
+            <button class="btn btn-x" onclick="chooseAnswer('X')">X</button>
+        </div>
     </div>
 
 <script>
+    // --- 게임 데이터 및 설정 (기존과 동일) ---
+    const quizData = [
+        { q: "Skin prep 전 멸균 장갑을 착용해야 한다.", a: "O" },
+        { q: "유치도뇨관 삽입 전 요도구만 소독하면 된다.", a: "X" },
+        { q: "마스크는 코와 입을 완전히 가려야 한다.", a: "O" },
+    ];
+
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+    
+    // 모바일/PC 화면 맞춤
     canvas.width = window.innerWidth > 500 ? 400 : window.innerWidth;
-    canvas.height = window.innerHeight - 150;
+    canvas.height = window.innerHeight; // 전체 높이 사용
 
     let score = 0;
     let currentQ = {};
     const fallingItems = [];
-    
-    // 퀴즈 데이터 (수정 가능)
-    const quizData = [
-        { q: "수술 전 손위생은 멸균 장갑 착용 시 생략 가능하다.", a: "X" },
-        { q: "멸균 가운의 멸균 영역은 허리 앞부분부터 가슴 높이까지다.", a: "O" },
-        { q: "마스크는 코와 입을 완전히 가려야 한다.", a: "O" },
-        { q: "수술 중 오염된 기구는 즉시 멸균 구역 밖으로 제거한다.", a: "O" }
-    ];
+    let isGameRunning = false; // 💡게임 실행 상태 변수 추가
 
-    let player = { x: canvas.width / 2 - 25, y: canvas.height - 60, w: 50, h: 50 };
-
-    function nextQuestion() {
-        currentQ = quizData[Math.floor(Math.random() * quizData.length)];
-        document.getElementById('qText').innerText = currentQ.q;
-        spawnItem();
-    }
-
-    function spawnItem() {
-        const types = ['O', 'X'];
-        types.forEach((type, index) => {
-            fallingItems.push({
-                x: (canvas.width / 3) * (index + 1) - 20,
-                y: -50,
-                text: type,
-                speed: 2 + Math.random() * 2
-            });
-        });
-    }
-
-    function movePlayer(type) {
-        if (type === 'O') player.x = (canvas.width / 3) - 25;
-        if (type === 'X') player.x = (canvas.width / 3 * 2) - 25;
-        checkAnswer(type);
-    }
-
-    function checkAnswer(choice) {
-        if (choice === currentQ.a) {
-            score += 10;
-            alert("정답입니다! 👏");
-        } else {
-            score -= 5;
-            alert("오답입니다! 😭 다시 확인해 보세요.");
-        }
-        document.getElementById('scoreVal').innerText = score;
-        fallingItems.length = 0; // 초기화
-        nextQuestion();
-    }
-
-    function update() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // 플레이어 (캐릭터 대용)
-        ctx.fillStyle = "#3498db";
-        ctx.fillRect(player.x, player.y, player.w, player.h);
-        ctx.fillStyle = "white";
-        ctx.fillText("ME", player.x + 15, player.y + 30);
-
-        // 떨어지는 아이템 그리기
-        fallingItems.forEach((item, i) => {
-            item.y += item.speed;
-            ctx.fillStyle = item.text === 'O' ? "#2ecc71" : "#e74c3c";
-            ctx.font = "bold 30px Arial";
-            ctx.fillText(item.text, item.x, item.y);
-
-            // 바닥에 닿으면 다시 생성
-            if (item.y > canvas.height) {
-                item.y = -50;
-            }
-        });
-
-        requestAnimationFrame(update);
-    }
-
-    nextQuestion();
-    update();
-
-</script>
-</body>
-</html>
+    // 플레이어 캐릭터 (간단한 파란색 박스)
+    let player = { x: canvas.width / 2 - 25, y: canvas.height - 150, w: 5
