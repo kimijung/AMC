@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMC 수술실 감염관리 챌린지</title>
+    <title> AMC 수술실 감염관리 챌린지</title>
     <style>
         /* --- 공통 스타일 (배경 이미지 설정 포함) --- */
         body {
@@ -14,19 +14,11 @@
             width: 100vw;
             height: 100vh;
             
-            /* 🖼️ [배경 이미지 넣는 곳] 🖼️ */
-            /* 1단계: 저장소에 이미지 업로드 (예: bg.jpg) */
-            /* 2단계: 아래 줄의 주석(/*)을 제거하고 파일명을 맞추세요 */
-            /* background-image: url('bg.jpg'); */
+            background-image: url('main_bg.jpg'); /* 👈 파일 이름을 정확히 입력 */
+            background-size: cover;    /* 👈 이미지가 잘리지 않고 화면을 꽉 채우도록 */
+            background-position: center; /* 👈 이미지의 중심이 화면 중앙에 오도록 */
+            background-attachment: fixed; /* 👈 화면이 움직여도 배경은 고정되게 */
             
-            /* 이미지가 없더라도 기본으로 보일 색상 */
-            background-color: #f0f8ff; 
-            background-size: cover; /* 화면을 꽉 채우게 */
-            background-position: center; /* 가운데 정렬 */
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         /* --- 1. 입력 화면 (Entry Screen) 스타일 --- */
