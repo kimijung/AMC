@@ -217,7 +217,7 @@
             <div id="feedback"></div>
 
             <div class="character-wrap">
-                <img id="characterImg" src="Me.png" alt="캐릭터">
+                <img id="characterImg" src="icon.png" alt="캐릭터">
             </div>
 
             <div class="controls">
@@ -281,6 +281,8 @@
         currentAffiliation = affiliation;
         currentName = name;
 
+         document.getElementById('characterImg').src = 'icon.png'; //
+
         document.getElementById('playerInfo').innerText = `${affiliation} ${name}`.trim();
         document.getElementById('entryScreen').style.display = 'none';
         document.getElementById('resultScreen').style.display = 'none';
@@ -311,20 +313,23 @@
         const current = quizData[currentQIndex];
         const feedbackEl = document.getElementById('feedback');
 
+        const img = document.getElementById('characterImg');
+
         if (choice === current.a) {
             score += 10;
             feedbackEl.style.color = "#27ae60";
-            feedbackEl.innerText = `정답! +10 / ${current.explanation}`;
+            img.src = 'icon_happy.png'; // ✅ 정답
         } else {
             feedbackEl.style.color = "#c0392b";
-            feedbackEl.innerText = `오답! 0점 / ${current.explanation}`;
+            img.src = 'icon_sad.png';   // ✅ 오답
         }
 
         document.getElementById('scoreVal').innerText = score;
 
         setTimeout(() => {
+            document.getElementById('characterImg').src = 'icon.png'; // ✅ 복귀
             currentQIndex++;
-
+            
             if (currentQIndex >= quizData.length) {
                 endGame();
             } else {
