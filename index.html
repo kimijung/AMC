@@ -107,6 +107,9 @@
     canvas.width = window.innerWidth > 500 ? 400 : window.innerWidth;
     canvas.height = window.innerHeight;
 
+    const playerImg = new Image();
+    playerImg.src = 'Me.png';
+
     let player = { x: canvas.width / 2 - 25, y: canvas.height - 180, w: 50, h: 50 };
 
     function startGame() {
@@ -174,11 +177,7 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // 플레이어 그리기
-        ctx.fillStyle = "#3498db";
-        ctx.fillRect(player.x, player.y, player.w, player.h);
-        ctx.fillStyle = "white";
-        ctx.font = "bold 14px Arial";
-        ctx.fillText("ME", player.x + 13, player.y + 30);
+        ctx.drawImage(playerImg, player.x, player.y, player.w, player.h);
 
         // 아이템 그리기
         fallingItems.forEach(item => {
