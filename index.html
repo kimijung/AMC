@@ -5,54 +5,192 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AMC 수술실 감염관리 챌린지</title>
     <style>
+        /* 기본 배경 설정 */
         body {
-            margin: 0;
+            margin: 0; padding: 0;
             font-family: 'Malgun Gothic', sans-serif;
             overflow: hidden;
-            text-align: center;
-            width: 100vw;
-            height: 100vh;
+            width: 100vw; height: 100vh;
             background-image: url('main_bg.jpg'); 
-            background-color: #f0f8ff; /* 이미지 안 뜰 때 대비 */
+            background-color: #f0f8ff;
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
+        /* 1. 입력 화면 */
         #entryScreen {
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 20px;
+            padding: 30px; border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            z-index: 10;
+            width: 300px; z-index: 10;
         }
-        #entryScreen h1 { color: #2c3e50; margin-bottom: 10px; font-size: 24px;}
-        
         .input-group { margin-bottom: 15px; text-align: left; }
         .input-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #34495e; }
-        .input-group input {
-            width: 250px; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;
-        }
+        .input-group input { width: 90%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; }
 
-        #startBtn {
-            background-color: #3498db; color: white; border: none; padding: 15px 40px;
-            font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer;
-            transition: background 0.3s; margin-top: 20px; width: 100%;
-        }
-        #startBtn:hover { background-color: #2980b9; }
-
-        #gameScreen {
-            display: none; 
-            position: relative;
-            width: 100%; height: 100%;
-        }
-
-        canvas { background: rgba(255,255,255,0.6); display: block; margin: 0 auto; }
+        /* 2. 게임 화면 */
+        #gameScreen { display: none; width: 100%; height: 100%; position: relative; }
+        canvas { background: rgba(255, 255, 255, 0.5); display: block; margin: 0 auto; }
         #ui { position: absolute; top: 10px; width: 100%; pointer-events: none; }
-        .score { font-size: 18px; font-weight: bold; color: #2c3e50; background: rgba(255,255,255,0.8); padding: 5px 15px; border-radius: 20px; display: inline-block;}
-        .question { font-size: 18px; background: rgba(255,255,255,0.9); padding: 15px; margin: 10px auto; border-radius: 10px; width: 85%; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); pointer-events: auto; font-weight: bold; }
-        .controls { position: fixed; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 40px; }
-        .btn { width: 85px; height: 85px; border-radius: 50%; border
+        .score-board { font-size: 18px; font-weight: bold; background: rgba(255,255,255,0.8); padding: 5px 15px; border-radius: 20px; display: inline-block; margin-bottom: 10px;}
+        .question-box { font-size: 18px; background: white; padding: 15px; border-radius: 10px; width: 85%; max-width: 400px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-weight: bold; }
+
+        /* 3. 결과 화면 */
+        #resultScreen {
+            display: none; background: rgba(255, 255, 255, 0.95);
+            padding: 40px; border-radius: 20px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* 버튼 공통 스타일 */
+        button {
+            background-color: #3498db; color: white; border: none; padding: 15px;
+            font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer; width: 100%;
+        }
+        .controls { position: fixed; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 30px; }
+        .btn-game { width: 80px; height: 80px; border-radius: 50%; font-size: 30px; }
+        .btn-o { background: #2ecc71; }
+        .btn-x { background: #e74c3c; }
+    </style>
+</head>
+<body>
+
+    <div id="entryScreen">
+        <h2 style="color:#2c3e50;">🏥 감염관리 챌린지</h2>
+        <div class="input-group">
+            <label>소속</label>
+            <input type="text" id="affiliationInput" value="A로젯">
+        </div>
+        <div class="input-group">
+            <label>이름</label>
+            <input type="text" id="nameInput" placeholder="이름 입력">
+        </div>
+        <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <div id="gameScreen">
+        <div id="ui">
+            <div class="score-board"><span id="playerInfo"></span> | 점수: <span id="scoreVal">0</span></div>
+            <div id="qText" class="question-box">문제를 불러오는 중...</div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        <div class="controls">
+            <button class="btn-game btn-o" onclick="chooseAnswer('O')">O</button>
+            <button class="btn-game btn-x" onclick="chooseAnswer('X')">X</button>
+        </div>
+    </div>
+
+    <div id="resultScreen">
+        <h2 style="color:#2c3e50;">수고하셨습니다!</h2>
+        <p id="finalScore" style="font-size: 24px; font-weight: bold;"></p>
+        <button onclick="location.reload()">다시 하기</button>
+    </div>
+
+<script>
+    const quizData = [
+        { q: "Skin prep 전 멸균 장갑을 착용해야 한다.", a: "O" },
+        { q: "유치도뇨관 삽입 전 요도구만 소독하면 된다.", a: "X" },
+        { q: "마스크는 코와 입을 완전히 가려야 한다.", a: "O" },
+        { q: "수술 기구에 손가락이 찔렸을 때, 나만 알고 있어도 괜찮다.", a: "X" }
+    ];
+
+    let score = 0;
+    let currentQIndex = 0;
+    let isGameRunning = false;
+    let fallingItems = [];
+
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth > 500 ? 400 : window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let player = { x: canvas.width / 2 - 25, y: canvas.height - 180, w: 50, h: 50 };
+
+    function startGame() {
+        const name = document.getElementById('nameInput').value;
+        if (!name) { alert("이름을 입력해 주세요!"); return; }
+        
+        document.getElementById('playerInfo').innerText = `${document.getElementById('affiliationInput').value} ${name}`;
+        document.getElementById('entryScreen').style.display = 'none';
+        document.getElementById('gameScreen').style.display = 'block';
+        
+        isGameRunning = true;
+        showNextQuestion();
+        update();
+    }
+
+    function showNextQuestion() {
+        if (currentQIndex >= quizData.length) {
+            endGame();
+            return;
+        }
+        document.getElementById('qText').innerText = quizData[currentQIndex].q;
+        spawnItems();
+    }
+
+    function spawnItems() {
+        fallingItems = [
+            { x: canvas.width * 0.25, y: -50, text: 'O' },
+            { x: canvas.width * 0.75 - 20, y: -50, text: 'X' }
+        ];
+    }
+
+    function chooseAnswer(choice) {
+        if (!isGameRunning) return;
+        
+        // 캐릭터 이동
+        player.x = (choice === 'O') ? canvas.width * 0.25 - 20 : canvas.width * 0.75 - 30;
+
+        setTimeout(() => {
+            if (choice === quizData[currentQIndex].a) {
+                score += 10;
+                document.querySelector('.score-board').style.background = '#2ecc71';
+            } else {
+                score -= 5;
+                document.querySelector('.score-board').style.background = '#e74c3c';
+            }
+            document.getElementById('scoreVal').innerText = score;
+            
+            setTimeout(() => {
+                document.querySelector('.score-board').style.background = 'rgba(255,255,255,0.8)';
+                currentQIndex++;
+                showNextQuestion();
+            }, 500);
+        }, 100);
+    }
+
+    function endGame() {
+        isGameRunning = false;
+        document.getElementById('gameScreen').style.display = 'none';
+        document.getElementById('resultScreen').style.display = 'block';
+        document.getElementById('finalScore').innerText = `최종 점수: ${score}점`;
+    }
+
+    function update() {
+        if (!isGameRunning) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 플레이어 그리기
+        ctx.fillStyle = "#3498db";
+        ctx.fillRect(player.x, player.y, player.w, player.h);
+        ctx.fillStyle = "white";
+        ctx.font = "bold 14px Arial";
+        ctx.fillText("ME", player.x + 13, player.y + 30);
+
+        // 아이템 그리기
+        fallingItems.forEach(item => {
+            item.y += 2;
+            ctx.fillStyle = (item.text === 'O') ? "#2ecc71" : "#e74c3c";
+            ctx.font = "bold 40px Arial";
+            ctx.fillText(item.text, item.x, item.y);
+            if (item.y > canvas.height) item.y = -50;
+        });
+
+        requestAnimationFrame(update);
+    }
+</script>
+</body>
+</html>
