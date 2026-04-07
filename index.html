@@ -182,6 +182,88 @@
                 font-size: 20px;
             }
         }
+
+                .image-question-wrap {
+            width: min(92vw, 760px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .image-board {
+            position: relative;
+            width: 100%;
+            max-width: 760px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            background: white;
+        }
+
+        .image-board img {
+            width: 100%;
+            display: block;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .hit-circle {
+            position: absolute;
+            width: 46px;
+            height: 46px;
+            border: 4px solid #e74c3c;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.7);
+            animation: popIn 0.18s ease-out;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.4);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .mcq-grid {
+            width: min(90%, 520px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .btn-mcq {
+            border: none;
+            border-radius: 16px;
+            padding: 16px 14px;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            background: #3498db;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+        }
+
+        .btn-mcq:active {
+            transform: scale(0.98);
+        }
+
+        .image-guide {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            background: rgba(255,255,255,0.92);
+            padding: 10px 14px;
+            border-radius: 14px;
+        }     
+        
     </style>
 </head>
 <body>
@@ -236,14 +318,73 @@
 
 <script>
     const quizData = [
-        { q: "Skin prep 전 멸균 장갑을 착용해야 한다.", a: "O", explanation: "오염 예방을 위해 적절한 보호구 착용이 중요합니다." },
-        { q: "유치도뇨관 삽입 전 요도구만 간단히 닦으면 충분하다.", a: "X", explanation: "삽입 전에는 무균술과 충분한 소독 절차가 필요합니다." },
-        { q: "마스크는 코와 입을 완전히 가려야 한다.", a: "O", explanation: "코를 노출하면 비말 차단 효과가 떨어집니다." },
-        { q: "오염된 장갑으로 다른 기구를 만져도 괜찮다.", a: "X", explanation: "오염 확산 위험이 있으므로 장갑 교체가 필요합니다." },
-        { q: "손위생은 환자 접촉 전후 모두 중요하다.", a: "O", explanation: "의료 관련 감염 예방의 기본입니다." },
-        { q: "주사 준비 중 한 번 소독한 트레이는 계속 청결 구역으로 볼 수 있다.", a: "X", explanation: "오염 가능성이 생기면 다시 청결 상태를 확인해야 합니다." },
-        { q: "찔림 사고가 발생하면 즉시 보고해야 한다.", a: "O", explanation: "노출 후 조치와 추적 관리가 필요합니다." },
-        { q: "수술실에서 머리카락이 일부 노출되어도 큰 문제는 아니다.", a: "X", explanation: "노출을 최소화하도록 캡을 올바르게 착용해야 합니다." }
+        {
+            type: "IMAGE_SINGLE",
+            q: "틀린 부분을 찾으세요.",
+            img: "틀린그림_ANS.png",
+            targets: [
+                { id: "hand", x: 892, y: 631, radius: 70 }
+            ],
+            explanation: "중심정맥관 삽입 시 maximal barrier precaution을 위해 drape으로 환자 신체를 충분히 덮어야 합니다."
+        },
+        {
+            type: "OX",
+            q: "외과적 손소독 시 1분 이상 팔꿈치 위 5cm까지 모든 부위를 소독해야 한다.",
+            a: "X",
+            explanation: "외과적 손소독은 2분 이상 시행합니다."
+        },
+        {
+            type: "MCQ",
+            q: "Skin prep 시 가장 중요한 것은?",
+            options: [
+                "소독제 다량 도포",
+                "소독제를 빠르게 도포",
+                "소독제 완전 건조"
+            ],
+            a: 2,
+            explanation: "소독제는 완전히 건조되어야 충분한 효과를 기대할 수 있습니다."
+        },
+        {
+            type: "IMAGE_MULTI",
+            q: "틀린 부분을 모두 찾으세요. (3개)",
+            img: "틀린그림_OP.png",
+            targets: [
+                { id: "waist", x: 635, y: 165, radius: 55 },
+                { id: "hair", x: 358, y: 642, radius: 55 },
+                { id: "nose", x: 377, y: 831, radius: 55 }
+            ],
+            explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
+        },
+        {
+            type: "MCQ",
+            q: "손위생이 필요하지 않은 시점은?",
+            options: [
+                "환자 접촉 전",
+                "체액 노출 위험 후",
+                "환자 주변 물품 접촉 전",
+                "환자 접촉 후"
+            ],
+            a: 2,
+            explanation: "환자 주변 물품 접촉 전은 WHO 손위생 5가지 시점에 포함되지 않습니다."
+        },
+        {
+            type: "OX",
+            q: "여성 환자에게 유치도뇨관을 삽입하기 전 요도구만 깨끗하게 닦으면 된다.",
+            a: "X",
+            explanation: "삽입 전에는 적절한 순서에 따라 충분히 소독해야 합니다."
+        },
+        {
+            type: "OX",
+            q: "수술 후 수술부위 드레싱 시, 기존 드레싱을 제거하고 새로운 드레싱 적용하기 전 손위생 및 장갑 교환이 필요하다.",
+            a: "O",
+            explanation: "기존 드레싱 제거 후에는 손위생과 장갑 교환이 필요합니다."
+        },
+        {
+            type: "OX",
+            q: "수술 부위 제모가 필요한 경우, 면도기를 사용하는 것이 가장 효과적이다.",
+            a: "X",
+            explanation: "면도기는 미세 상처를 유발할 수 있어 필요 시 클리퍼 등을 사용합니다."
+        }
     ];
 
     let score = 0;
@@ -251,6 +392,8 @@
     let isAnswerLocked = false;
     let currentAffiliation = '';
     let currentName = '';
+
+    let foundTargets = new Set();
 
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxe5NjMLeJ0Fa_VIxEidrmFmsg7J1BH5awJhP72_SSiwdGMvmGNvAgRvzBZacjzNpVG/exec';
 
@@ -299,30 +442,68 @@
 
     function showQuestion() {
         const current = quizData[currentQIndex];
-        document.getElementById('questionCard').innerText = current.q;
+        const card = document.getElementById('questionCard');
+        const controls = document.querySelector('.controls');
+
         document.getElementById('progressVal').innerText = currentQIndex + 1;
         document.getElementById('feedback').innerText = "";
         document.getElementById('feedback').style.color = "#2c3e50";
+
         isAnswerLocked = false;
+        foundTargets = new Set();
+        controls.innerHTML = "";
+
+        // OX
+        if (current.type === "OX") {
+            card.innerHTML = `<div>${current.q}</div>`;
+
+            controls.innerHTML = `
+                <button class="btn-answer btn-o" onclick="chooseAnswer('O')">O</button>
+                <button class="btn-answer btn-x" onclick="chooseAnswer('X')">X</button>
+            `;
+        }
+
+        // 객관식
+        else if (current.type === "MCQ") {
+            card.innerHTML = `<div>${current.q}</div>`;
+
+            controls.innerHTML = current.options.map((opt, idx) => `
+                <button class="btn-mcq" onclick="chooseMCQ(${idx})">
+                    ${idx + 1}. ${opt}
+                </button>
+            `).join("");
+        }
+
+        // 틀린그림찾기
+        else if (current.type === "IMAGE_SINGLE" || current.type === "IMAGE_MULTI") {
+
+            const guide = current.type === "IMAGE_SINGLE"
+                ? "틀린 부분 1개를 누르세요"
+                : "틀린 부분 3개를 모두 누르세요";
+
+            card.innerHTML = `
+                <div class="image-question-wrap">
+                    <div>${current.q}</div>
+                    <div class="image-guide">${guide}</div>
+                    <div id="imageBoard" class="image-board">
+                        <img id="quizImage" src="${current.img}">
+                    </div>
+                </div>
+            `;
+
+    document.getElementById("quizImage").onclick = handleImageClick;
+        }
     }
 
     function chooseAnswer(choice) {
-        if (isAnswerLocked) return;
-        isAnswerLocked = true;
-
         const current = quizData[currentQIndex];
-        const feedbackEl = document.getElementById('feedback');
+        handleResult(choice === current.a);
+    }
 
-        const img = document.getElementById('characterImg');
-
-        if (choice === current.a) {
-            score += 10;
-            feedbackEl.style.color = "#27ae60";
-            img.src = 'icon_happy.png'; // ✅ 정답
-        } else {
-            feedbackEl.style.color = "#c0392b";
-            img.src = 'icon_sad.png';   // ✅ 오답
-        }
+    function chooseMCQ(idx) {
+        const current = quizData[currentQIndex];
+        handleResult(idx === current.a);
+    }
 
         document.getElementById('scoreVal').innerText = score;
 
@@ -338,6 +519,88 @@
         }, 1200);
     }
 
+    function handleImageClick(e) {
+        if (isAnswerLocked) return;
+
+        const current = quizData[currentQIndex];
+        const img = e.target;
+        const rect = img.getBoundingClientRect();
+
+        // 클릭 위치 → 실제 이미지 좌표로 변환
+        const x = ((e.clientX - rect.left) / rect.width) * img.naturalWidth;
+        const y = ((e.clientY - rect.top) / rect.height) * img.naturalHeight;
+
+        let hit = null;
+
+        for (const t of current.targets) {
+            if (foundTargets.has(t.id)) continue;
+
+            const dx = x - t.x;
+            const dy = y - t.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+
+            if (dist < t.radius) {
+                hit = t;
+                break;
+            }
+        }
+
+        if (!hit) {
+            document.getElementById('feedback').innerText = "다시 찾아보세요!";
+            document.getElementById('feedback').style.color = "#e74c3c";
+            return;
+        }
+
+        foundTargets.add(hit.id);
+        drawCircle(hit, img);
+
+        // 1번 문제 (1개만 찾으면 끝)
+        if (current.type === "IMAGE_SINGLE") {
+            handleResult(true);
+            return;
+        }
+
+        // 4번 문제 (3개 다 찾아야 끝)
+        if (foundTargets.size === current.targets.length) {
+            handleResult(true);
+        } else {
+            document.getElementById('feedback').innerText =
+                `정답! ${current.targets.length - foundTargets.size}개 남음`;
+        }
+        }
+
+    function handleResult(isCorrect) {
+        if (isAnswerLocked) return;
+        isAnswerLocked = true;
+
+        const feedback = document.getElementById('feedback');
+        const img = document.getElementById('characterImg');
+
+        if (isCorrect) {
+            score += 10;
+            feedback.innerText = "정답!";
+            feedback.style.color = "#27ae60";
+            img.src = 'icon_happy.png';
+        } else {
+            feedback.innerText = "오답!";
+            feedback.style.color = "#c0392b";
+            img.src = 'icon_sad.png';
+        }
+
+        document.getElementById('scoreVal').innerText = score;
+
+        setTimeout(() => {
+            document.getElementById('characterImg').src = 'icon.png';
+            currentQIndex++;
+
+            if (currentQIndex >= quizData.length) {
+                endGame();
+            } else {
+                showQuestion();
+            }
+        }, 1200);
+    }
+    
     function endGame() {
         document.getElementById('gameScreen').style.display = 'none';
         document.getElementById('resultScreen').style.display = 'block';
@@ -364,6 +627,23 @@
     document.getElementById('affiliationInput').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') startGame();
     });
+
+    function drawCircle(target, img) {
+        const board = document.getElementById('imageBoard');
+
+        const circle = document.createElement("div");
+        circle.className = "hit-circle";
+
+        const left = (target.x / img.naturalWidth) * 100;
+        const top = (target.y / img.naturalHeight) * 100;
+
+        circle.style.left = left + "%";
+        circle.style.top = top + "%";
+
+        board.appendChild(circle);
+    }
+    
+        
 </script>
 </body>
 </html>
