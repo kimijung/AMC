@@ -482,11 +482,10 @@
         else if (current.type === "IMAGE_SINGLE" || current.type === "IMAGE_MULTI") {
             charWrap.style.display = "none";
             card.classList.add('image-mode');
-
+            
             card.innerHTML = `
                 <div class="image-question-wrap">
                     <div>${current.q}</div>
-                    <div class="image-guide">${guide}</div>
                     <div id="imageBoard" class="image-board">
                         <img id="quizImage" src="${current.img}">
                     </div>
@@ -494,9 +493,7 @@
             `;
 
             const img = document.getElementById("quizImage");
-
-            img.onload = function() {
-                img.onclick = handleImageClick;
+            img.onclick = handleImageClick;
             };
         }
     }
