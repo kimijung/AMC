@@ -327,7 +327,7 @@
             q: "틀린 부분을 찾으세요.",
             img: "틀린그림_ANS.png",
             targets: [
-                { id: "hand", x: 0.892, y: 0.631, radius: 0.08 }
+                { id: "hand", x: 0.636, y: 0.903, radius: 0.09 }
             ],
             explanation: "중심정맥관 삽입 시 maximal barrier precaution을 위해 drape으로 환자 신체를 충분히 덮어야 합니다."
         },
@@ -353,9 +353,9 @@
             q: "틀린 부분을 모두 찾으세요. (3개)",
             img: "틀린그림_OP.png",
             targets: [
-                { id: "waist", x: 0.635, y: 0.165, radius: 0.06 },
-                { id: "hair", x: 0.642, y: 0.358, radius: 0.06 },
-                { id: "nose", x: 0.831, y: 0.377, radius: 0.06 }
+                { id: "waist", x: 0.234, y: 0.708, radius: 0.07 },
+                { id: "hair", x: 0.654, y: 0.386, radius: 0.06 },
+                { id: "nose", x: 0.790, y: 0.430, radius: 0.06 }
             ],
             explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
         },
@@ -627,11 +627,8 @@
         const circle = document.createElement("div");
         circle.className = "hit-circle";
 
-        const left = (target.x / img.naturalWidth) * 100;
-        const top = (target.y / img.naturalHeight) * 100;
-
-        circle.style.left = left + "%";
-        circle.style.top = top + "%";
+        circle.style.left = (target.x * 100) + "%";
+        circle.style.top = (target.y * 100) + "%";
 
         board.appendChild(circle);
     }
