@@ -505,19 +505,6 @@
         handleResult(idx === current.a);
     }
 
-        document.getElementById('scoreVal').innerText = score;
-
-        setTimeout(() => {
-            document.getElementById('characterImg').src = 'icon.png'; // ✅ 복귀
-            currentQIndex++;
-            
-            if (currentQIndex >= quizData.length) {
-                endGame();
-            } else {
-                showQuestion();
-            }
-        }, 1200);
-    }
 
     function handleImageClick(e) {
         if (isAnswerLocked) return;
