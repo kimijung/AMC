@@ -96,14 +96,44 @@
         .question-card.image-mode {
             width: 100%;
             max-width: 420px;
-            padding: 24px 6px;
+            padding: 20px 14px 18px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            background: rgba(255,255,255,0.98);   /* 🔥 카드 배경 */
-            border-radius: 20px;                 /* 🔥 둥근 모서리 */
+            background: rgba(255,255,255,0.98);
+            border-radius: 24px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            overflow: hidden;
+            overflow: visible;
+            min-height: auto;
+        }
+
+        .image-mcq-wrap {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .image-mcq-question {
+            font-size: 18px;
+            line-height: 1.45;
+            font-weight: 700;
+            color: #2c3e50;
+            text-align: center;
+            word-break: keep-all;
+        }
+        
+        .image-mcq-board {
+            width: 100%;
+            max-width: 340px;
+        }
+        
+        .image-mcq-board img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 18px;
         }
                 
         .character-wrap {
@@ -362,47 +392,22 @@
                 font-size: 28px;
             }
         
-            .btn-mcq {
-                border: none;
-                border-radius: 10px;
-                padding: 12px 10px;
-                font-size: 14px;
-                font-weight: 700;
-                color: #2c3e50;
-                background: white;
-                cursor: pointer;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.16);
-                line-height: 1.4;
-                word-break: keep-all;
-                min-height: 44px;
-            }
 
-                .image-board {
-                    aspect-ratio: auto;
-                    width: 100%;
-                    max-width: 320px;   /* 필요하면 330px까지 */
-                    margin-top: 8px;
-                }
+            .image-board {
+                aspect-ratio: auto;
+                width: 100%;
+                max-width: 320px;   /* 필요하면 330px까지 */
+                margin-top: 8px;
+            }
             
-                .image-board img {
-                    height: auto;
-                    width: 100%;
-                    max-height: 52vh;   /* 핵심 */
-                    object-fit: contain;
-                    margin: 0 auto;
-                    display: block;
-                }
-            }
-        
-        
-            .image-guide {
-                font-size: 14px;   /* 18px에서 14px로 축소 */
-                font-weight: 600;
-                color: #555;       /* 약간 부드러운 색상으로 변경 */
-                background: rgba(255,255,255,0.8);
-                padding: 4px 10px; /* 상하 여백 축소 */
-                border-radius: 10px;
-            }
+            .image-board img {
+                height: auto;
+                width: 100%;
+                max-height: 52vh;   /* 핵심 */
+                object-fit: contain;
+                margin: 0 auto;
+                display: block;
+            }        
                                 
             .hit-circle {
                 position: absolute;
@@ -505,14 +510,23 @@
             cursor: pointer;
         }
 
+        .image-mcq-question {
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        
+        .image-mcq-board {
+            max-width: 290px;
+        }
+        
         .image-mcq-options {
-            width: min(94%, 360px);
+            max-width: 280px;
             gap: 8px;
         }
-    
+        
         .btn-image-mcq {
-            height: 58px;
-            font-size: 24px;
+            height: 46px;
+            font-size: 22px;
             border-radius: 14px;
         }
     }
@@ -607,7 +621,7 @@
         {
             id: "Q3",
             type: "IMAGE_MCQ",
-            q: "다음 중 수술장 근무 시 가장 적절한 손톱 상태를 고르세요.",
+            q: "다음 중 수술장 근무 시<br>가장 적절한 손톱 상태를 고르세요.",
             img: "nail.png",
             options: ["1", "2", "3"],
             a: 0,
@@ -825,31 +839,29 @@
         else if (current.type === "IMAGE_MCQ") {
             charWrap.style.display = "none";
             card.classList.add('image-mode');
+            controls.innerHTML = "";
         
             card.innerHTML = `
-                <div class="image-question-wrap">
-                    <div style="font-size: 19px; line-height: 1.4; word-break: keep-all;">
+                <div class="image-mcq-wrap">
+                    <div class="image-mcq-question">
                         ${current.q}
                     </div>
         
-                    <div id="imageBoard" class="image-board">
-                        <img id="quizImage" src="${current.img}">
+                    <div class="image-mcq-board">
+                        <img id="quizImage" src="${current.img}" alt="손톱 예시 이미지">
                     </div>
-                </div>
-            `;
         
-            controls.innerHTML = `
-                <div class="image-mcq-options">
-                    ${current.options.map((opt, idx) => `
-                        <button class="btn-image-mcq" onclick="chooseMCQ(${idx})">
-                            ${opt}
-                        </button>
-                    `).join("")}
+                    <div class="image-mcq-options">
+                        ${current.options.map((opt, idx) => `
+                            <button class="btn-image-mcq" onclick="chooseMCQ(${idx})">
+                                ${opt}
+                            </button>
+                        `).join("")}
+                    </div>
                 </div>
             `;
         }
     
-
         else if (current.type === "IMAGE_SINGLE" || current.type === "IMAGE_MULTI") {
             charWrap.style.display = "none";
             card.classList.add('image-mode');
