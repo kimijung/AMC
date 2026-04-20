@@ -112,7 +112,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
+            gap: 7px;
         }
         
         .image-mcq-question {
@@ -126,7 +126,7 @@
         
         .image-mcq-board {
             width: 100%;
-            max-width: 340px;
+            max-width: 272px;
         }
         
         .image-mcq-board img {
@@ -358,24 +358,24 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 28px;
+            margin-bottom: 20px;
         }
         
         .btn-image-mcq {
             height: 64px;
-            border: 1.5px solid #d6e6f5;
+            border: 1.5px solid #b7dfc8;
             border-radius: 16px;
             font-size: 28px;
             font-weight: 800;
-            color: #2c3e50;
-            background: #f7fbff;
+            color: #1f3b2d;
+            background: #eefaf2;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         }
         
         .btn-image-mcq:active {
             transform: scale(0.97);
-            background: #d9ecff;
+            background: #d8f0e0;
         }
 
 
@@ -516,7 +516,7 @@
         }
         
         .image-mcq-board {
-            max-width: 290px;
+            max-width: 232px;
         }
         
         .image-mcq-options {
@@ -614,9 +614,8 @@
         {
             id: "Q2",
             type: "OX",
-            q: "외과적 손소독 시 <strong>1분</strong> 이상 <strong>팔꿈치 위 5cm</strong>까지 모든 부위를 소독해야 한다.",
-            a: "X",
-            explanation: "외과적 손소독 시 2분 이상 스크럽이 필요합니다."
+            q: "제한구역에서 마스크를 착용할 때<br>숨이 차다면 코는 노출하고 입만 가려도 괜찮다.",
+            a: "X"
         },
         {
             id: "Q3",
@@ -629,15 +628,14 @@
         },
         {
             id: "Q4",
-            type: "IMAGE_MULTI",
-            q: "틀린 부분을 <strong>모두</strong> 찾으세요. (3개)",
-            img: "OP.png",
-            targets: [
-                { id: "waist", x: 0.24, y: 0.62, radius: 0.08 }, // 만약 더 위로 올리고 싶다면? y를 낮추기
-                { id: "hair",  x: 0.65, y: 0.40, radius: 0.05 }, // 만약 더 오른쪽으로 밀고 싶다면? x를 높이기
-                { id: "nose",  x: 0.76, y: 0.43, radius: 0.05 }  
+            type: "MCQ",
+            q: "장갑을 착용한 상태로 피 묻은 거즈를 주워<br>폐기물통에 넣었다. 다음 행동으로 올바른 것은?",
+            options: [
+                "장갑만 벗는다.",
+                "장갑을 벗고 손위생 한다.",
+                "장갑을 착용한 상태로 문 손잡이를 잡아 열고 방에서 나간다."
             ],
-                explanation: "모자 밖 머리카락 노출, 마스크 밖 코 노출, 가운 허리끈 풀림은 모두 감염관리 측면에서 부적절합니다."
+            a: 1
         },
         {
             id: "Q5",
@@ -655,26 +653,8 @@
         {
             id: "Q6",
             type: "OX",
-            q: "여성 환자에게 유치도뇨관을 삽입하기 전<br><strong>요도구</strong>만 깨끗하게 닦으면 된다.",
-            a: "X",
-            explanation: "삽입 전에는 적절한 순서에 따라 충분히 소독해야 합니다."
-        },
-        {
-            id: "Q7",
-            type: "OX",
-            q: "중심정맥관 투약 전,<br>허브는 <strong>4회</strong>만 소독하면 충분하다.",
-            a: "X",
-            explanation: "중심정맥관 투약 전에는 허브를 6회 이상 쥐어짜듯 소독해야 합니다."
-        },
-        {
-            id: "Q8",
-            type: "IMAGE_SINGLE",
-            q: "외과적 손소독 시, alcohol rub에<br>가장 먼저 담가야 할 것은?",
-            img: "Handrub.png",
-            targets: [
-                { id: "fingertips", x: 0.44, y: 0.12, radius: 0.16 }
-            ],
-            explanation: "한쪽 손에 alcohol rub을 받은 후, 반대편 손끝을 담가 손톱 밑과 손가락 끝을 충분히 소독합니다."
+            q: "수술장 연결 복도는 준제한구역이므로<br>모자를 잠시 벗어도 된다.",
+            a: "X"
         }
     ];
 
