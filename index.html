@@ -323,6 +323,31 @@
             cursor: pointer;
         }
 
+        .image-mcq-options {
+            width: min(92%, 420px);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+        
+        .btn-image-mcq {
+            height: 64px;
+            border: 1.5px solid #d6e6f5;
+            border-radius: 16px;
+            font-size: 28px;
+            font-weight: 800;
+            color: #2c3e50;
+            background: #f7fbff;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        
+        .btn-image-mcq:active {
+            transform: scale(0.97);
+            background: #d9ecff;
+        }
+
 
         @media (max-width: 480px) {
             .question-card {
@@ -479,7 +504,19 @@
             border: none;
             cursor: pointer;
         }
-            
+
+        .image-mcq-options {
+            width: min(94%, 360px);
+            gap: 8px;
+        }
+    
+        .btn-image-mcq {
+            height: 58px;
+            font-size: 24px;
+            border-radius: 14px;
+        }
+    }
+                
     </style>
 </head>
 <body>
@@ -569,16 +606,12 @@
         },
         {
             id: "Q3",
-            type: "MULTI",
-            q: "수술부위감염 예방 번들에 포함되는 항목을<br><strong>모두</strong> 선택해주세요.",
-            options: [
-                "적절한 외과적 손소독",
-                "수술 중 충분한 산소 공급",
-                "예상 절개부위를 넘어가지 않도록 국소부위만 피부 소독",
-                "정상 체온 유지"
-            ],
-            a: [0, 1, 3],
-            explanation: "수술부위감염 예방 번들에는 상기 항목이 포함되어야 하며, 예상 절개부위 이상 광범위하게 피부 소독해야 합니다."
+            type: "IMAGE_MCQ",
+            q: "다음 중 수술장 근무 시 가장 적절한 손톱 상태를 고르세요.",
+            img: "nail.png",
+            options: ["1", "2", "3"],
+            a: 0,
+            explanation: "수술장 근무 시 손톱은 짧고 깨끗해야 하며, 네일아트나 인조손톱은 부적절합니다."
         },
         {
             id: "Q4",
@@ -788,6 +821,34 @@
                 <button class="submit-btn" onclick="submitMulti()">제출</button>
             `;   
         }
+        
+        else if (current.type === "IMAGE_MCQ") {
+            charWrap.style.display = "none";
+            card.classList.add('image-mode');
+        
+            card.innerHTML = `
+                <div class="image-question-wrap">
+                    <div style="font-size: 19px; line-height: 1.4; word-break: keep-all;">
+                        ${current.q}
+                    </div>
+        
+                    <div id="imageBoard" class="image-board">
+                        <img id="quizImage" src="${current.img}">
+                    </div>
+                </div>
+            `;
+        
+            controls.innerHTML = `
+                <div class="image-mcq-options">
+                    ${current.options.map((opt, idx) => `
+                        <button class="btn-image-mcq" onclick="chooseMCQ(${idx})">
+                            ${opt}
+                        </button>
+                    `).join("")}
+                </div>
+            `;
+        }
+    
 
         else if (current.type === "IMAGE_SINGLE" || current.type === "IMAGE_MULTI") {
             charWrap.style.display = "none";
@@ -992,19 +1053,20 @@
 
         // 1. 이름 삽입
         document.getElementById('resultTitle').innerText = `${currentName}님 수고하셨습니다 🙇‍♀️🙇‍♂️`;
+        const totalScore = currentQuizData.length * 10;
         
         // 2. 점수 삽입
         document.getElementById('finalScore').innerHTML = `
             최종 점수: 
             <span style="color:#0b6b3a; font-weight:800;">${score}점</span>
-            <span style="color:#444; font-weight:500;"> / 80점</span>
+            <span style="color:#444; font-weight:500;"> / ${totalScore}점</span>
         `;
 
         // 3. 점수별 코멘트 (추천 멘트로 변경)
         let comment = "";
-        if (score >= 80) {
+        if (score === totalScore) {
             comment = "당신은 우리 수술장의 감염관리 마스터! 🏥✨";
-        } else if (score >= 50) {
+        } else if (score >= totalScore * 0.6) {
             comment = "훌륭합니다!<br>안전한 수술장을 위해 조금만 더 힘내주세요! 👍";
         } else {
             comment = "감염관리 수칙을 다시 한번 복습해볼까요? ✍️";
